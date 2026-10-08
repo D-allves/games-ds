@@ -50,7 +50,7 @@ def ataque_normal():
     # Gere um dano aleatório
     # entre 8 e 18.
 
-    dano = 0
+    dano = random.randint(8, 18)
 
 
     # TODO 2
@@ -58,7 +58,7 @@ def ataque_normal():
     # Crie 20% de chance
     # de ataque crítico.
 
-    critico = False
+    critico = random.random() < 0.20
 
 
     # TODO 3
@@ -66,6 +66,9 @@ def ataque_normal():
     # Se for crítico:
     #
     # dano = dano * 2
+
+    if critico:
+        dano = dano * 2
 
 
     return dano, critico
@@ -108,6 +111,8 @@ def curar(hp_atual):
     # Sorteie uma cura
     # entre 10 e 20.
 
+    cura = random.randint(10, 20)
+
 
     # TODO 2
     #
@@ -117,7 +122,7 @@ def curar(hp_atual):
     #
     # HP máximo = 100
 
-    novo_hp = hp_atual
+    novo_hp = min(hp_atual + cura, HP_MAX_JOGADOR)
 
 
     # TODO 3
@@ -125,7 +130,7 @@ def curar(hp_atual):
     # Calcule quanto realmente
     # foi recuperado.
 
-    quantidade_curada = 0
+    quantidade_curada = novo_hp - hp_atual
 
 
     return novo_hp, quantidade_curada
@@ -181,10 +186,29 @@ def ataque_especial(
 
     # TODO BOSS CHALLENGE
 
+    if turno - ultimo_especial < 3:
+        return (
+            0,
+            False,
+            ultimo_especial,
+            "🔥 Especial está em cooldown"
+        )
+
+    novo_ultimo_especial = turno
+
+    if random.random() < 0.30:
+        return (
+            0,
+            False,
+            novo_ultimo_especial,
+            "🔥 O especial do Boss falhou!"
+        )
+
+    dano = random.randint(20, 35)
 
     return (
-        0,
-        False,
-        ultimo_especial,
-        "🔥 Especial ainda não implementado"
+        dano,
+        True,
+        novo_ultimo_especial,
+        f"🔥 Especial acertou e causou {dano} de dano!"
     )
